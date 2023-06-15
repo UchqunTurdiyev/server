@@ -18,4 +18,11 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       secretOrKey: configService.get<string>('SECRET_JWT'),
     });
   }
+  async validate({ _id }: Pick<UserDocument, '_id'>) {
+    const user = await this.userModel.findById(_id);
+
+    return user;
+  }
 }
+
+// Pick faqat Id ni olyapti agar Exclude bolsa faqat shu id ni olmaydi
