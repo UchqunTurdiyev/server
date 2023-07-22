@@ -16,21 +16,25 @@ export class AuthService {
   ) {}
   async register(dto: LoginDto) {
     const existUser = await this.isExistUser(dto.email);
-    if (existUser)
-      throw new BadRequestException('User with that email is already exist in the system');
+    if (existUser) throw new BadRequestException('already_exist');
 
     const solt = await genSalt(10);
     const passwordHash = await hash(dto.password, solt);
-    const newUser = await this.userModule.create({ ...dto, password: passwordHash });
+    const newUser = await this.userModule.create({
+      ...dto,
+      password: dto.password.length ? passwordHash : '',
+    });
     const token = await this.issueTokenPair(String(newUser._id));
     return { user: this.getUserField(newUser), ...token };
   }
 
   async login(dto: LoginDto) {
     const existUser = await this.isExistUser(dto.email);
-    if (!existUser) throw new BadRequestException('User not found');
-    const currentPassword = await compare(dto.password, existUser.password);
-    if (!currentPassword) throw new BadRequestException('Incorrect pasword');
+    if (!existUser) throw new BadRequestException('user_not_found');
+    if (dto.password.length) {
+      const currentPassword = await compare(dto.password, existUser.password);
+      if (!currentPassword) throw new BadRequestException('incorrect_password');
+    }
     const token = await this.issueTokenPair(String(existUser._id));
 
     return { user: this.getUserField(existUser), ...token };
@@ -47,6 +51,16 @@ export class AuthService {
 
     const token = await this.issueTokenPair(String(user._id));
     return { user: this.getUserField(user), ...token };
+  }
+
+  async checkUser(email: string) {
+    const user = await this.isExistUser(email);
+
+    if (user) {
+      return 'User';
+    } else {
+      return 'no-user';
+    }
   }
 
   async isExistUser(email: string): Promise<UserDocument> {
@@ -69,6 +83,7 @@ export class AuthService {
       id: user._id,
       email: user.email,
       fullName: user.fullName,
+      avatar: user.avatar,
     };
   }
 }
