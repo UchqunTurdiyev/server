@@ -24,7 +24,7 @@ export class AuthController {
 
   @UsePipes(new ValidationPipe())
   @HttpCode(200)
-  @Post('access')
+  @Post('access ')
   async getNewToken(@Body() dto: TokenDto) {
     return this.authService.getNewTokens(dto);
   }
