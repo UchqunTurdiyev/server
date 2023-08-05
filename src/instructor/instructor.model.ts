@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import mongoose, { HydratedDocument, Schema as SchemaMS } from 'mongoose';
+import { HydratedDocument, Schema as SchemaMS } from 'mongoose';
 import { User } from 'src/user/user.model';
 
 export type InstructorDocument = HydratedDocument<Instructor>;
@@ -9,7 +9,7 @@ export class Instructor {
   @Prop()
   socialMedia: string;
 
-  @Prop({ type: SchemaMS.Types.ObjectId, ref: 'Owner' })
+  @Prop({ type: SchemaMS.Types.ObjectId, ref: 'User' })
   author: User;
 
   @Prop({ default: false })

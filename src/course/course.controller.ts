@@ -1,12 +1,13 @@
-import { CourseService } from './course.service';
-import { Controller, HttpCode, Post, Body, Patch, Param } from '@nestjs/common';
-import { Auth } from 'src/auth/decorator/auth.decorator';
-import { CourseBodyDto } from './course.dto';
+import { Body, Controller, Get, HttpCode, Param, Patch, Post } from '@nestjs/common';
 import { User } from 'src/user/decorators/user.decorator';
+import { CourseService } from './course.service';
+import { CourseBodyDto } from './course.dto';
+import { Auth } from 'src/auth/decorator/auth.decorator';
 
 @Controller('course')
 export class CourseController {
   constructor(private readonly courseService: CourseService) {}
+
   @HttpCode(200)
   @Post('create')
   @Auth('INSTRUCTOR')

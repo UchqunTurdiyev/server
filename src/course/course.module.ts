@@ -1,10 +1,9 @@
 import { Module } from '@nestjs/common';
-import { CourseController } from './course.controller';
-import { CourseService } from './course.service';
 import { MongooseModule } from '@nestjs/mongoose';
-import { User } from 'src/user/decorators/user.decorator';
-import { UserSchema } from 'src/user/user.model';
+import { User, UserSchema } from 'src/user/user.model';
+import { CourseController } from './course.controller';
 import { Course, CourseSchema } from './course.model';
+import { CourseService } from './course.service';
 
 @Module({
   imports: [

@@ -4,12 +4,14 @@ import { InjectModel } from '@nestjs/mongoose';
 import { User, UserDocument } from 'src/user/user.model';
 import { Model } from 'mongoose';
 import { Instructor, InstructorDocument } from './instructor.model';
+import { Course, CourseDocument } from 'src/course/course.model';
 
 @Injectable()
 export class InstructorService {
   constructor(
     @InjectModel(User.name) private userModel: Model<UserDocument>,
     @InjectModel(Instructor.name) private instructorModel: Model<InstructorDocument>,
+    @InjectModel(Course.name) private courseModel: Model<CourseDocument>,
   ) {}
   async applyAsInstructor(dto: InstructorApplyDto) {
     const { email, firstName, lastName, socialMedia } = dto;
@@ -29,5 +31,13 @@ export class InstructorService {
     await this.instructorModel.create(data);
 
     return 'Success';
+  }
+
+  async getAllCourse(author: string) {
+    return await this.courseModel.find({ author });
+  }
+
+  async getDetailedCourse(slug: string) {
+    return await this.courseModel.findOne({ slug });
   }
 }
