@@ -5,9 +5,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { getMongoDBConfig } from './config/mongo.config';
 import { UserModule } from './user/user.module';
-import { MailModule } from './mail/mail.module';
-import { InstructorModule } from './instructor/instructor.module';
-import { FileModule } from './file/file.module';
 
 @Module({
   imports: [
@@ -20,9 +17,6 @@ import { FileModule } from './file/file.module';
     AuthModule,
     CourseModule,
     UserModule,
-    MailModule,
-    InstructorModule,
-    FileModule,
   ],
 })
 export class AppModule {}
